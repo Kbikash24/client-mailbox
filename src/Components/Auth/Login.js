@@ -45,7 +45,7 @@ const Login = () => {
         localStorage.setItem("token", data.idToken);
         localStorage.setItem("numberOfMails", 0);
         console.log("User LoggedIn successfully");
-        navigate("/home");
+        navigate("/");
       } else {
         setLoading(false);
         const data = await res.json();

@@ -1,18 +1,21 @@
+import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { authAction } from '../../store/authSlice';
-import { useDispatch } from 'react-redux';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { BsList } from "react-icons/bs";
+import { Button } from 'react-bootstrap';
+import Sidebar from './Sidebar'; // Import the Sidebar component
 
 const NavBar = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const [showSidebar, setShowSidebar] = useState(false);
 
-  const handleLogout = () => {
-    dispatch(authAction.logout());
-    navigate('/login');
-  }
+  const openSidebar = () => {
+    setShowSidebar(true);
+  };
+
+  const closeSidebar = () => {
+    setShowSidebar(false);
+  };
 
   return (
     <>
@@ -24,11 +27,12 @@ const NavBar = () => {
             <Nav.Link href="#features">Features</Nav.Link>
             <Nav.Link href="#pricing">Pricing</Nav.Link>
           </Nav>
-          <div style={{ color: 'white', fontSize: '20px',marginRight:'-80px' }}>
-            <a onClick={handleLogout} style={{ cursor: 'pointer' }}>Logout</a>
-          </div>
+          <Button style={{ fontSize: '28px', position: 'absolute', right: '20px', fontWeight: '700' }} onClick={openSidebar}><BsList /></Button>
         </Container>
       </Navbar>
+
+      {/* Render the Sidebar component and pass showSidebar and closeSidebar as props */}
+      <Sidebar show={showSidebar} onHide={closeSidebar} />
     </>
   );
 }

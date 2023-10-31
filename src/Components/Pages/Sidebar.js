@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Offcanvas, ListGroup } from 'react-bootstrap';
 import { BsFillPenFill,BsInboxesFill} from "react-icons/bs";
 import Compose from '../Mailbox/Compose';
@@ -7,15 +7,25 @@ import { BiLogOut} from "react-icons/bi";
 import { useDispatch } from 'react-redux';
 import { authAction } from '../../store/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Sidebar = ({ show, onHide }) => {
   const [showCompose, setShowCompose] = useState(false);
+  const [mailCount, setMailCount] = useState(0);
+  const email = localStorage.getItem("email");
+  const inboxMails = useSelector((state) => state.email.unreadMails);
  const dispatch =useDispatch()
  const navigate=useNavigate()
  const handleLogout=()=>{
   dispatch(authAction.logout())
   navigate('/login')
  }
+
+ 
+ useEffect(() => {
+  setMailCount(inboxMails);
+}, [email, inboxMails]);
+
 
   const toggleCompose = () => {
     setShowCompose(!showCompose);
@@ -36,7 +46,7 @@ const Sidebar = ({ show, onHide }) => {
               <BsFillPenFill /> <div style={{ marginLeft: '35px', alignItems: 'center', marginTop: '-35px' }}>Compose</div>
             </ListGroup.Item>
             <ListGroup.Item action href='/inbox' style={{ fontSize: '22px',marginBottom:'20px'  }}>
-              <BsInboxesFill /> <div style={{ marginLeft: '35px', alignItems: 'center', marginTop: '-35px' }}>Inbox</div>
+              <BsInboxesFill /> <div style={{ marginLeft: '35px', alignItems: 'center', marginTop: '-35px' }}>Inbox ({(mailCount)})</div>
             </ListGroup.Item>
             <ListGroup.Item action  href ='/outbox' style={{ fontSize: '22px',marginBottom:'20px'  }}>
               <BsInboxesFill /> <div style={{ marginLeft: '35px', alignItems: 'center', marginTop: '-35px' }}>Outbox</div>

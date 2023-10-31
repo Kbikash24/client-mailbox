@@ -3,6 +3,7 @@ import { Button, Card, ListGroup, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { mailActions } from "../../store/mailSlice";
 import { Link } from "react-router-dom";
+import './Outbox.css'
 
 const Outbox = () => {
   const dispatch = useDispatch();
@@ -48,7 +49,7 @@ const Outbox = () => {
       }
     );
 
-    let data = await res;
+    let data = res;
     console.log(data);
     getData();
   };

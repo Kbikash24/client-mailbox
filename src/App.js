@@ -10,11 +10,12 @@ import Outbox from "./Components/Mailbox/Outbox";
 import OpenOutbox from "./Components/Mailbox/OpenOutbox";
 import OpenMails from "./Components/Mailbox/OpenMails";
 import DeletedMails from "./Components/Mailbox/DeletedMails";
+import NavBar from "./Components/Pages/Navbar";
 
 
 const App = () => {
   return (
-  <> 
+  <> <NavBar/>
       <Routes>
         <Route path="/login" element={<Login/>}></Route>
         <Route path="/signup" element={<SignUp/>}></Route>

@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Card, ListGroup, Spinner, Button } from "react-bootstrap";
+import { Card, ListGroup, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { mailActions } from "../../store/mailSlice";
 import { Link } from "react-router-dom";
-import { MdDelete} from "react-icons/md";
+import { FiDelete } from "react-icons/fi";
 
 const Inbox = () => {
   const [loading, setLoading] = useState(false);
@@ -71,13 +71,13 @@ const Inbox = () => {
   return (
     <>
       <Card bg="light">
-        <h2 style={{ textAlign: "center", textDecoration: "underline",fontFamily:'fantasy',margin:'15px' }}>
+        <h2 style={{ textAlign: "center", textDecoration: "underline" }}>
           Inbox
         </h2>
         <ListGroup>
           {data.length === 0 && (
-            <h5 style={{ textAlign: "center", margin: "1rem auto",fontFamily:'cursive' }}>
-            The Inbox is empty!!!!
+            <h5 style={{ textAlign: "center", margin: "1rem auto" }}>
+              No Mails in Inbox!!
             </h5>
           )}
           {loading && data.length > 0 && <Spinner />}
@@ -88,28 +88,31 @@ const Inbox = () => {
               return (
                 <ListGroup.Item
                   key={index}
-                  className="bg-dark bg-gradient bg-opacity-50"
+                  className="bg"
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                  }}>
+                  }}
+                >
                   <Link
                     key={index}
                     style={{
                       textDecoration: "none",
-                      color: "white",
+                      color: "black",
                       alignItems: "center",
                     }}
-                    to={`/inbox/${data[email].id}`}>
+                    to={`/inbox/${data[email].id}`}
+                  >
                     {data[email].read === false && (
                       <p
                         className="mt-3 me-3 ms-0"
-                        style={{ marginRight: "10px", float: "left" }}>
+                        style={{ marginRight: "10px", float: "left" }}
+                      >
                         🟢
                       </p>
                     )}{" "}
-                    <span style={{ textDecoration: "none", color: "white" }}>
+                    <span style={{ textDecoration: "none", color: "black" }}>
                       <b>From:</b> {data[email].from}
                     </span>{" "}
                     <span>({data[email].time})</span>
@@ -119,13 +122,14 @@ const Inbox = () => {
                       {data[email].subject}
                     </span>
                   </Link>
-                  <Button
-                    style={{fontSize:'20px',border:'none'}}
-                    >
-                    <MdDelete onClick={() => DeleteHandler(data[email].id)}
+                  <FiDelete
+                    onClick={() => DeleteHandler(data[email].id)}
                     key={data[email].id}
-                    style={{ float: "right" }} />
-                  </Button>
+                    style={{ float: "right",fontSize:'30px' }}
+                    variant="danger"
+                  >
+                    Delete
+                  </FiDelete>
                 </ListGroup.Item>
               );
             })}

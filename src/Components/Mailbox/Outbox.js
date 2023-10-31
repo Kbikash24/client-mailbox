@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { mailActions } from "../../store/mailSlice";
 import { Link } from "react-router-dom";
 import './Outbox.css'
+import { FiDelete } from "react-icons/fi";
 
 const Outbox = () => {
   const dispatch = useDispatch();
@@ -78,7 +79,7 @@ const Outbox = () => {
               return (
                 <ListGroup.Item
                   key={index}
-                  className="bg-dark bg-gradient bg-opacity-50"
+                  className="bg"
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
@@ -88,11 +89,11 @@ const Outbox = () => {
                     key={index}
                     style={{
                       textDecoration: "none",
-                      color: "white",
+                      color: "black",
                       alignItems: "center",
                     }}
                     to={`/outbox/${data[email].id}`}>
-                    <span style={{ textDecoration: "none", color: "white" }}>
+                    <span style={{ textDecoration: "none", color: "black" }}>
                       <b>To:</b> {data[email].to}
                     </span>{" "}
                     <span>({data[email].time})</span>
@@ -102,13 +103,13 @@ const Outbox = () => {
                       {data[email].subject}
                     </span>
                   </Link>
-                  <Button
+                  <FiDelete
                     onClick={() => DeleteHandler(data[email].id)}
                     key={data[email].id}
-                    style={{ float: "right" }}
+                    style={{ float: "right",fontSize:'25px' }}
                     variant="danger">
                     Delete
-                  </Button>
+                  </FiDelete>
                 </ListGroup.Item>
               );
             })}

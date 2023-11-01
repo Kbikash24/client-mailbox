@@ -16,10 +16,13 @@ const Sidebar = ({ show, onHide }) => {
   const inboxMails = useSelector((state) => state.email.unreadMails);
  const dispatch =useDispatch()
  const navigate=useNavigate()
- const handleLogout=()=>{
-  dispatch(authAction.logout())
-  navigate('/login')
- }
+ const logoutHandler=()=>{
+  dispatch(authAction.logout());
+  localStorage.removeItem("email");
+  localStorage.removeItem("token");
+  localStorage.removeItem("numberOfMails");
+    navigate('/login');
+}
 
  
  useEffect(() => {
@@ -54,7 +57,7 @@ const Sidebar = ({ show, onHide }) => {
             <ListGroup.Item action href='/inbox/deletedMails/:id' style={{ fontSize: '22px',marginBottom:'20px'  }}>
               <MdAutoDelete /> <div style={{ marginLeft: '35px', alignItems: 'center', marginTop: '-35px' }}>Deleted Message</div>
             </ListGroup.Item>
-            <ListGroup.Item action  onClick={handleLogout} style={{ fontSize: '22px',marginBottom:'20px'  }}>
+            <ListGroup.Item action  onClick={logoutHandler} style={{ fontSize: '22px',marginBottom:'20px'  }}>
               <BiLogOut /> <div style={{ marginLeft: '35px', alignItems: 'center', marginTop: '-35px' }}>Logout</div>
             </ListGroup.Item>
           </ListGroup>

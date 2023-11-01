@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Card, ListGroup, Spinner } from "react-bootstrap";
+import { Card, ListGroup } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { mailActions } from "../../store/mailSlice";
 import { Link } from "react-router-dom";
@@ -9,7 +9,7 @@ const Inbox = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const data = useSelector((state) => state.email.recieved);
-  console.log(data);
+  const [unreadMails, setUnreadMails] = useState(0); // New state for unread mails
 
   const email = localStorage.getItem("email");
   const changedMail = email.replace(/[@.]/g, "");
@@ -21,21 +21,22 @@ const Inbox = () => {
       let res = await fetch(
         `https://mailbox-6e7cd-default-rtdb.firebaseio.com/${changedMail}Inbox.json`
       );
-      let data = await res.json();
+      let inboxData = await res.json();
       let arr = [];
-      let unreadMails = 0;
-      console.log(data);
+      let unreadMailsCount = 0;
 
-      for (let i in data) {
-        if (data[i].read === false) {
-          unreadMails++;
+      for (let i in inboxData) {
+        if (inboxData[i].read === false) {
+          unreadMailsCount++;
         }
         const id = i;
-        arr = [{ id: id, ...data[i] }, ...arr];
-        dispatch(mailActions.recievedMail([...arr]));
-        dispatch(mailActions.unreadMessage(unreadMails));
-        setLoading(false);
+        arr = [{ id: id, ...inboxData[i] }, ...arr];
       }
+      
+      dispatch(mailActions.recievedMail([...arr]));
+      dispatch(mailActions.unreadMessage(unreadMailsCount));
+      setUnreadMails(unreadMailsCount);
+      setLoading(false);
     } catch (err) {
       console.log(err);
       setLoading(false);
@@ -44,6 +45,17 @@ const Inbox = () => {
 
   useEffect(() => {
     getData();
+  }, [getData]);
+
+  // Use setInterval to periodically check for new emails
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      getData();
+    }, 3000); // Adjust the interval as needed
+
+    return () => {
+      clearInterval(intervalId);
+    };
   }, [getData]);
 
   const DeleteHandler = async (id) => {
@@ -64,7 +76,6 @@ const Inbox = () => {
 
     let response = await res;
     console.log(response);
-    getData();
     setLoading(false);
   };
 
@@ -74,13 +85,14 @@ const Inbox = () => {
         <h2 style={{ textAlign: "center", textDecoration: "underline" }}>
           Inbox
         </h2>
+        <span>Unread Mails-{unreadMails}</span>
         <ListGroup>
           {data.length === 0 && (
             <h5 style={{ textAlign: "center", margin: "1rem auto" }}>
               No Mails in Inbox!!
             </h5>
           )}
-          {loading && data.length > 0 && <Spinner />}
+          
 
           {!loading &&
             data !== null &&
@@ -122,10 +134,11 @@ const Inbox = () => {
                       {data[email].subject}
                     </span>
                   </Link>
+                
                   <FiDelete
                     onClick={() => DeleteHandler(data[email].id)}
                     key={data[email].id}
-                    style={{ float: "right",fontSize:'30px' }}
+                    style={{ float: "right", fontSize: "30px" }}
                     variant="danger"
                   >
                     Delete

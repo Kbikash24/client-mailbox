@@ -102,7 +102,7 @@ const Login = () => {
           </div>
           {error && <p className="text-danger mt-2">{error}</p>}
           <p className="text-right mt-3">
-            <a href="/">Forgot Password?</a>
+            <a href="/forgotpassword">Forgot Password?</a>
             <br></br>
             <a href="/signup" type="submit">
               Sign Up

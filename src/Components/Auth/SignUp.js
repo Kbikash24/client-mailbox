@@ -26,7 +26,7 @@ const SignUp = () => {
     
     setIsLoading(true);
     
-    // You should replace the URL with your actual sign-up endpoint.
+
     fetch(
       "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCfG99JYJryY8Gs1vV6sCdPTlo-scjLn08",
       {
@@ -34,7 +34,9 @@ const SignUp = () => {
         body: JSON.stringify({
           email: enteredEmail,
           password: enteredPassword,
-          // You may add other fields as needed.
+          firstName:enteredFirstName,
+          lastName:enteredLastName,
+         
         }),
         headers: {
           "Content-Type": "application/json",

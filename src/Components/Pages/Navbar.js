@@ -10,6 +10,8 @@ import { useSelector } from 'react-redux';
 const NavBar = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const isLoggedIn= useSelector((state) => state.auth.isLoggedIn);
+  
+  
   const openSidebar = () => {
     setShowSidebar(true);
   };
@@ -26,6 +28,7 @@ const NavBar = () => {
           <Nav className="me-auto" style={{ fontSize: '20px' }}>
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/about">About</Nav.Link>
+            
           
           </Nav>
           <Button style={{ fontSize: '28px', position: 'absolute', right: '20px', fontWeight: '700' }} onClick={openSidebar}><BsList /></Button>
